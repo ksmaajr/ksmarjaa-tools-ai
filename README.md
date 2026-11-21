@@ -1,73 +1,36 @@
 # KSMARJAA TOOLS AI
 
-Aplikasi lokal Windows berbasis Tauri 2 dan TypeScript. Versi 0.3.12 mencakup Analisis folder, perpustakaan Manifest, Pengaturan, Log aktivitas, dan menu Generate. Sebelum mulai, Generate memeriksa manifest, foto dan format sumber, akses toko/template, API key, folder output, serta checkpoint antrean. Hasil unduhan dibatasi saat streaming dan divalidasi sebelum disimpan. Maksimum 30 produk per batch dikirim paralel sesuai Pengaturan; batch berikutnya menunggu semua hasil selesai, menampilkan hitung mundur jeda, lalu berjalan otomatis. Antrean bisa berpindah batch dan menyiapkan ulang produk gagal; generation ID, pilihan toko, dan lokasi output dipulihkan dari data aplikasi yang disimpan atomik. Tema Light/Dark, Bahasa Indonesia/English, gerakan antarmuka, opasitas panel, serta skala tampilan desktop 90% dapat disesuaikan. Semua menu menyediakan panduan kontekstual; Activity Log diberi warna sesuai level dan manifest dapat dihapus dengan konfirmasi. Lihat [panduan integrasi API](docs/api-auth-check.md) untuk detail pemulihan serta keamanan request.
+**Rapikan folder foto produk, simpan daftar siap kerja, lalu jalankan Generate dalam batch.** KSMARJAA TOOLS AI adalah aplikasi desktop Windows untuk menyiapkan foto katalog produk dan memantau proses Generate dari satu tempat.
 
-Halaman Generate memakai tata letak premium yang dapat digulir tanpa memotong panel, animasi halus, pilihan template otomatis sesuai toko, ringkasan batch dan unduh otomatis dari Pengaturan, antrean per batch yang dapat digulir dan dipilih untuk meninjau batch lain tanpa mengubah batch yang berjalan, kontrol jeda/hentikan/lanjutkan, progres aktual dari website, estimasi lokal yang mengikuti progres tersebut, dan folder output custom dengan default di folder sumber. Preferensi reduced motion tetap dihormati.
+[![Lisensi MIT](https://img.shields.io/badge/lisensi-MIT-8b2040)](LICENSE) ![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-24569c) ![Versi sumber](https://img.shields.io/badge/versi-0.3.12-555555)
 
-## Mulai cepat
+**[Mulai pakai](#-mulai-pakai)** · **[Cara kerja](#-cara-kerja)** · **[Build dari source](#-build-dari-source)** · **[Integrasi API](docs/api-auth-check.md)**
 
-1. Jalankan aplikasi desktop Windows dan buka **Analisis folder**.
-2. Pilih folder produk, jalankan analisis, lalu simpan manifest untuk produk yang siap.
-3. Jika ingin memakai Generate, masukkan API key website melalui **Pengaturan → Koneksi API**, simpan, lalu uji koneksi.
-4. Buka **Generate**, pilih manifest dan toko, lalu periksa panel kesiapan serta lokasi output sebelum memulai antrean. Cek progres dan riwayat di **Log aktivitas**.
+## ✨ Fitur
 
-Analisis folder berjalan secara lokal. Saat Generate dijalankan, aplikasi mengirim foto referensi dan data generation yang diperlukan ke API Rizky Moto AI. Pengujian lokal 0.3.12 mencakup TypeScript, build Vite, 16 unit test, lima alur Playwright, dan build Windows x64. Generate dengan API key pengguna belum diuji end-to-end.
-
-## Pengembangan
-
-Prasyarat Windows: Node.js dengan npm (build 0.3.12 menggunakan Node.js 24), Rust stable dengan target MSVC, Visual Studio C++ Build Tools dengan Windows SDK, dan Microsoft Edge WebView2 Runtime. Repositori source tidak memuat executable dan installer.
-
-```powershell
-npm ci
-npm run tauri dev
-```
-
-Untuk memeriksa frontend dan build paket lokal:
-
-```powershell
-npm test
-npx playwright install chromium
-npx playwright test
-npm run build
-npm run tauri build -- --bundles nsis
-```
-
-| Folder | Isi |
+| Menu | Yang bisa dikerjakan |
 | --- | --- |
-| `src/` | Tampilan TypeScript/CSS, analisis folder, kontrak API, dan pengendali antrean |
-| `src-tauri/` | Backend Rust, akses file, credential, request API, dan konfigurasi paket Windows |
-| `tests/` | Pengujian alur pengguna di Playwright |
-| `docs/` | Dokumentasi integrasi API |
+| 📂 **Analisis folder** | Pindai subfolder, cari produk, dan lihat folder mana yang siap atau perlu perbaikan. |
+| 📋 **Manifest** | Simpan dan buka daftar produk siap proses. Cari produk, cek detail, atau buka manifest langsung di Generate. |
+| 🎨 **Generate** | Pilih toko, cek kesiapan, jalankan antrean per batch, dan pantau progres. Jeda atau lanjutkan antrean, lalu simpan hasil ke folder tujuan. |
+| 🕓 **Log aktivitas** | Lihat hasil proses dan kesalahan. Gunakan pencarian, filter kategori atau status, dan ekspor JSON. |
+| ⚙️ **Pengaturan** | Atur batch, jeda, percobaan ulang, unduh otomatis, tema Light atau Dark, bahasa, dan animasi. |
 
-## Menjalankan
+## 🚀 Mulai pakai
 
-- Aplikasi Windows: jalankan `ksmarjaa-tools-ai.exe` di folder `src-tauri/target/release` setelah build.
-- Pengembangan: `npm install`, lalu `npm run tauri dev` (Rust stable MSVC dan Visual Studio C++ Build Tools diperlukan).
-- Preview browser: `npm run dev`, buka `http://127.0.0.1:1420` melalui Chrome/Edge. Preview memakai pemilih folder browser, sehingga hanya menampilkan nama sumber, bukan path absolut Windows.
-- Build installer dan executable: `npm run tauri build`.
-- Unit test: `npm test`. Pengujian alur browser: `npx playwright test`.
+1. Jalankan aplikasi desktop Windows. Untuk membuat paket lokal, ikuti [Build dari source](#-build-dari-source).
+2. Pilih **Analisis folder → Pilih folder → Mulai analisis**. Periksa daftar **Perlu perbaikan** jika ada judul atau foto yang belum lengkap.
+3. Klik **Simpan manifest**. Buka menu **Manifest**, pilih daftar tadi, lalu klik **Gunakan manifest ini** untuk meneruskannya ke Generate.
+4. Di **Generate**, pilih toko, periksa panel kesiapan dan folder output, lalu mulai antrean. Fitur Generate memerlukan akses ke layanan Rizky Moto AI. Analisis, pembuatan manifest, dan build bisa dilakukan tanpa akses tersebut.
+5. Pantau batch aktif, hasil tersimpan, dan kendala melalui **Generate** dan **Log aktivitas**.
 
-## Aturan sumber
+Untuk animasi tambahan, pilih **Pengaturan → Hasil & Tampilan → Animasi → Penuh**.
 
-Pilih folder sumber, lalu klik **Mulai analisis**. Jumlah produk dihitung dari folder yang memiliki `JUDUL PRODUK.txt` (alias lama `judul.txt` tetap didukung), bukan dari jumlah foto. Judul dibaca utuh, mendukung UTF-8, UTF-16 dengan BOM, serta fallback Windows-1252. Huruf besar/kecil tidak berpengaruh.
+## 🧭 Cara kerja
 
-Produk siap jika judul valid dan minimal satu foto referensi tersedia: `FOTO PRODUK` dan/atau `CONTOH FOTO PRODUK TERPASANG`. Nama lama `foto produk terpasang` tetap didukung. Foto menerima JPG, JPEG, PNG, WebP, maksimal 10 MB. Jika hanya foto terpasang yang tersedia, foto itu digunakan sebagai gambar utama dan referenceMode menjadi installed-only; file yang sama tidak diduplikasi ke slot kedua.
+### 1. Analisis folder dan validasi produk
 
-Identitas diambil dari jalur folder: merek (YAMAHA/HONDA dan merek yang didukung), jenis motor, part, jumlah/paket, dan model. Atribut yang tidak disebutkan pada folder tidak ditebak dari judul. Contoh YAMAHA/MIO M3/TAMENG KNALPOT/2 PCS/SLASH BIG HEAD menghasilkan brand YAMAHA, motorcycle MIO M3, part TAMENG KNALPOT, salesLabel 2 PCS, quantity 2, model SLASH BIG HEAD. 2 PCS tetap jenis pcs, tidak otomatis disamakan dengan paket/set. Konteks folder induk tetap dibaca dari path sumber desktop meskipun memilih subfolder.
-
-Tidak ada pencocokan gambar atau panggilan AI. Pemeriksaan gambar hanya membaca 16 byte header. Folder `Hasil Generate`, folder tersembunyi, source aplikasi `moto-studio`, dan symbolic links dilewati. File sumber tidak dipindahkan, diubah, atau dihapus.
-
-Judul kosong, foto tidak tersedia, foto ganda yang ambigu, atau gambar tidak valid membuat entri tersebut belum siap. Produk lain yang lengkap tetap bisa disimpan. Folder dengan foto tetapi tanpa file judul ditandai dan tidak dihitung sebagai produk. `FOTO PRODUK.txt` tidak ditebak sebagai judul. Struktur mentah lama dengan MODEL.txt belum didukung otomatis.
-
-## Manifest
-
-Manifest berisi hanya produk siap, disimpan ke `[folder sumber]/.moto-studio/manifest.json`. Folder belum lengkap dilewati dan jumlahnya ditampilkan sebelum simpan. Penyimpanan berikutnya memperbarui file yang sama, melalui file sementara dan rename di desktop. Manifest lama dengan nama bertanggal tidak dihapus dan tetap dapat dibuka. Path gambar relatif terhadap sourceRoot; judul custom disimpan utuh. `identity` mencatat atribut folder, `referenceMode` mencatat sumber foto, dan `analysisSummary` mencatat jumlah produk dari judul, produk siap, serta folder yang dilewati. Struktur sumber dipertahankan melalui folder/hierarchy. Pola hasil berikutnya `[sumber]/Hasil Generate/[toko]/[jalur produk]/[nama file]`.
-
-Folder `Hasil Generate` dibuat saat hasil pertama disimpan. Daftar manifest disimpan lokal untuk dilihat kembali. Menu Manifest menampilkan tanggal, sumber, jumlah produk, tabel dengan pencarian dan pagination, serta dialog detail. Tombol Gunakan manifest ini memilihnya dan langsung membuka Generate. Generate menggunakan path dan foto yang terdaftar pada manifest, tanpa pemindaian ulang. Akses file dibatasi native backend ke folder sumber manifest dan path relatif yang tervalidasi; resume setelah restart tidak meminta izin ulang.
-
-## Contoh folder
-
-Gunakan gambar JPG yang Anda miliki dan buat file judul dengan teks biasa:
+Gunakan pola folder ini dengan foto milik Anda sendiri:
 
 ```text
 Contoh Produk/
@@ -76,29 +39,84 @@ Contoh Produk/
         └── TAMENG KNALPOT/
             └── 2 PCS/
                 ├── JUDUL PRODUK.txt
-                └── FOTO PRODUK.jpg
+                ├── FOTO PRODUK.jpg
+                └── CONTOH FOTO PRODUK TERPASANG.jpg
 ```
 
-## Tampilan
+- Satu folder dengan `JUDUL PRODUK.txt` dihitung sebagai satu produk. Nama lama `judul.txt` tetap diterima. Judul dibaca utuh dari teks UTF-8, UTF-16 dengan BOM, atau Windows-1252.
+- Produk siap jika judul valid dan terdapat minimal satu foto referensi bernama `FOTO PRODUK` atau `CONTOH FOTO PRODUK TERPASANG`. Jika hanya foto terpasang yang tersedia, aplikasi menggunakannya sebagai referensi utama satu kali.
+- Foto JPG, JPEG, PNG, dan WebP didukung hingga 10 MB per file. Aplikasi memeriksa format dari header file. Judul kosong, foto hilang, foto ganda yang ambigu, dan format yang tidak valid muncul sebagai masalah.
+- Merek, motor, komponen, jumlah, dan model diambil dari jalur folder. Pemindaian berjalan lokal dan melewati folder tersembunyi, tautan simbolis, serta `Hasil Generate`.
 
-Tema hitam transparan dengan aksen merah, efek acrylic Windows, dan monogram K. Nama aplikasi, judul jendela, metadata manifest, dan installer menggunakan KSMARJAA TOOLS AI. Tanpa thumbnail atau checkbox. Animasi transisi, hover, indikator scan, dan dialog mendukung preferensi reduced motion. Font dibundel lokal agar aplikasi tidak membutuhkan Google Fonts atau internet saat analisis.
+### 2. Simpan manifest
 
-Versi 0.2.3 memakai satu keluarga font Inter, judul 27–29 px, label/isi 12–13 px, serta keterangan 10–11 px. Bahasa antarmuka diringkas menjadi petunjuk tindakan tanpa slogan. Halaman analisis memakai tinggi jendela yang tersedia, dengan daftar produk dan panduan yang dapat digulir sendiri. Tombol analisis dan simpan memiliki area tetap.
+Manifest adalah file JSON berisi produk siap proses, judul, identitas dari folder, dan path relatif ke foto sumber. Desktop menyimpannya ke `[folder sumber]/.moto-studio/manifest.json` melalui file sementara. Folder yang perlu diperbaiki tetap tercatat dalam ringkasan analisis. Foto asli dan manifest lama bertanggal tetap tersedia.
 
-## Pengaturan dan tes API key
+### 3. Periksa kesiapan dan jalankan Generate
 
-Menu Pengaturan cukup meminta API key website. Alamat `https://rizkymotoshop.my.id` dan jalur API otomatis dari src/api-contract.json. Tes GET katalog toko mengikuti API sebenarnya dan menampilkan toko yang diizinkan key; tidak membutuhkan endpoint buatan authenticated:true. Tersedia request per batch, jeda batch, timeout, interval status, maksimal percobaan request/download, jeda awal/maksimum retry, jeda bertahap, download otomatis, penamaan judul custom, animasi, serta opasitas kaca. Simpan menerapkan perubahan tampilan; Batal mengembalikan nilai tersimpan; Reset proses mempertahankan API key. Foto sumber di atas 10 MB ditolak validasi, sesuai batas upload API.
+- Pilih manifest dan toko. Template aktif dipilih otomatis dari katalog toko.
+- Panel kesiapan memeriksa foto sumber, katalog dan template, akses layanan, folder hasil, serta status pemulihan antrean.
+- Produk diproses per batch, hingga 30 produk per batch sesuai pengaturan. Setelah batch aktif selesai, aplikasi menunggu jeda yang ditentukan sebelum melanjutkan. Memilih batch untuk ditinjau tidak mengubah batch yang sedang berjalan.
+- Layanan mengembalikan ID pekerjaan, kemudian aplikasi memantau progresnya. Persentase berasal dari layanan. Waktu selesai yang tampil adalah perkiraan lokal.
 
-Pada Windows, nilai biasa disimpan secara atomik ke `%APPDATA%/com.ksmarjaatools.desktop/settings.json`. API key disimpan terpisah di Windows Credential Manager dan diikat ke URL dasar website. Tes key membaca key tersimpan di backend, tanpa menampilkan ulang rahasianya. Mengisi key baru tidak menyimpan key sampai tombol Simpan ditekan. Penghapusan key juga menunggu Simpan. Kegagalan menulis pengaturan mengembalikan perubahan key jika memungkinkan dan melaporkan kegagalan.
+### 4. Lanjutkan antrean dengan aman
 
-Preview browser menyimpan pengaturan biasa di localStorage, tetapi key hanya dalam memori sesi. Reload preview menghapus key sementara. Aplikasi Windows menyimpan key antar-restart. Lihat [audit integrasi API](docs/api-auth-check.md): API tersedia pada branch feature/api-key-generation-integration. Menu Generate memakai endpoint tersebut; model tidak dikirim agar default website aktif yang digunakan. Status/persentase dibaca dari website; ETA merupakan perkiraan lokal dari progres aktual yang diterima. Hasil diunduh asli, dicadangkan internal, dikompresi, lalu disimpan kurang dari 2.000.000 byte.
+| Situasi | Yang dilakukan aplikasi |
+| --- | --- |
+| **Dijeda, dihentikan, atau aplikasi ditutup** | Simpan status lokal. Saat pengguna melanjutkan, cek kembali pekerjaan yang sudah memiliki ID. Pekerjaan yang sudah diterima server bisa tetap berjalan di sana. |
+| **Server membatasi permintaan** | Atur laju permintaan katalog, Generate, polling, dan unduhan serta ikuti jeda yang diminta server. |
+| **Respons kirim terputus tanpa ID** | Tandai status ambigu. Periksa riwayat di website sebelum menyiapkan pengiriman ulang agar produk tidak diproses ganda. |
+| **Pekerjaan gagal** | Tampilkan alasan di antrean atau Log aktivitas. Produk yang gagal bisa disiapkan ulang melalui aksi manual. |
 
-## Layout, notifikasi, dan aktivitas
+### 5. Simpan hasil
 
-Pengaturan dibagi ke empat tab: Koneksi API, Pengiriman, Retry, serta Hasil & Tampilan. Nilai yang belum disimpan tetap dipertahankan saat pindah tab/halaman. Validasi membuka tab kolom yang bermasalah. Area isi dapat digulir sendiri, sementara judul jendela, navigasi, serta bar tindakan tetap memiliki ruang masing-masing. Bar simpan tidak mengambang di atas formulir. Layout diuji pada jendela 1440×900, 1366×768, dan 900×700.
+Jika unduh otomatis aktif, aplikasi mengambil gambar setelah pekerjaan selesai, membatasi ukuran unduhan, dan memeriksa format file. Gambar asli unduhan dicadangkan di area internal, lalu hasil dikompresi hingga **di bawah 2.000.000 byte**. Lokasi default adalah `[folder sumber]/Hasil Generate/[toko]/[jalur produk]/`. Anda bisa memilih folder output sendiri di Generate.
 
-Notifikasi melayang di kanan atas untuk sukses, gagal, peringatan, dan informasi. Maksimal tiga tampil sekaligus, bisa ditutup, berhenti menghitung waktu saat diarahkan mouse, dan memiliki tautan ke aktivitas. Notifikasi sukses hilang setelah 5 detik, peringatan 7 detik, kegagalan 9 detik. Preferensi reduced motion tetap dihormati.
+> **Data lokal dan layanan.** Analisis folder berlangsung di perangkat. Saat Generate dijalankan, foto referensi dan data pekerjaan yang diperlukan dikirim ke layanan Rizky Moto AI. Kredensial layanan disimpan di Windows Credential Manager. Detail request, status, dan batas layanan tersedia di [panduan integrasi API](docs/api-auth-check.md).
 
-Log Aktivitas menyimpan maksimal 2.000 entri di penyimpanan lokal WebView. Tersedia kategori, filter status, pencarian, halaman 25 entri, ekspor JSON, dan hapus dengan konfirmasi. Key tidak diberikan ke logger, dan pola key website/Bearer/key OpenAI yang dikenal disamarkan sebagai lapisan tambahan. Riwayat bertahan antar-restart. Waktu ditampilkan dalam Asia/Jakarta. Proses folder per file tidak membuat spam notifikasi.
+## 🛠️ Build dari source
 
-Pengingat ringan seperti manifest belum tersedia, pembatalan perubahan, dan validasi isian hanya berupa popup. Hasil proses nyata tetap dicatat. Popup yang sama tidak ditumpuk; pesan ringan tidak menawarkan tautan ke log. Entri pengingat manifest dari versi lama juga disaring saat membaca riwayat.
+**Prasyarat di Windows x64**
+
+- Node.js 24 dengan npm dan Git.
+- Rust stable dengan toolchain MSVC.
+- Visual Studio 2022 Build Tools dengan **Desktop development with C++** dan Windows SDK.
+- Microsoft Edge WebView2 Runtime untuk menjalankan aplikasi desktop.
+
+```powershell
+git clone https://github.com/ksmaajr/ksmarjaa-tools-ai.git
+cd ksmarjaa-tools-ai
+npm ci
+npm run tauri dev
+```
+
+Untuk melihat frontend di browser, jalankan `npm run dev` dan buka `http://127.0.0.1:1420`. Gunakan aplikasi Tauri untuk mencoba dialog Windows, penyimpanan kredensial, dan akses file native.
+
+**Tes dan build paket Windows**
+
+```powershell
+npm run build
+npm test
+npx playwright install chromium
+npx playwright test
+cargo test --manifest-path src-tauri/Cargo.toml --locked
+npm run tauri build -- --bundles nsis
+```
+
+Executable lokal tersedia di `src-tauri/target/release/ksmarjaa-tools-ai.exe`, dan installer di `src-tauri/target/release/bundle/nsis/`. Repositori ini berisi source code dan dokumentasi. Build tidak membutuhkan kredensial layanan.
+
+**Status versi 0.3.12:** TypeScript, Vite, 16 tes unit, lima skenario Playwright, dan build NSIS x64 telah diverifikasi. Generate dengan akun pengguna masih belum diuji end-to-end.
+
+## 🗂️ Struktur kode
+
+| Lokasi | Tanggung jawab |
+| --- | --- |
+| [`src/scanner.ts`](src/scanner.ts) | Pindai folder, validasi produk, dan susun data manifest. |
+| [`src/generate-view.ts`](src/generate-view.ts) | Cek kesiapan, jadwalkan batch, pantau progres, dan pulihkan antrean. |
+| [`src-tauri/src/`](src-tauri/src/) | Akses file Windows, penyimpanan, kredensial, dan integrasi layanan. |
+| [`tests/`](tests/) | Tes alur pengguna dengan Playwright. |
+| [`docs/api-auth-check.md`](docs/api-auth-check.md) | Kontrak endpoint dan catatan perilaku layanan. |
+
+## 📄 Lisensi dan kontribusi
+
+Source code tersedia di bawah [lisensi MIT](LICENSE). Dependensi pihak ketiga mengikuti lisensi masing-masing. Untuk melaporkan masalah, buka [GitHub Issues](https://github.com/ksmaajr/ksmarjaa-tools-ai/issues) dengan versi Windows, langkah reproduksi, dan hasil yang diharapkan. Gunakan contoh data yang bisa dibagikan. Perubahan kode bisa diajukan lewat pull request.
