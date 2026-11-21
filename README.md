@@ -1,5 +1,7 @@
 # KSMARJAA TOOLS AI
 
+**Bahasa Indonesia** · [English](README.en.md)
+
 **Rapikan folder foto produk, simpan daftar siap kerja, lalu jalankan Generate dalam batch.** KSMARJAA TOOLS AI adalah aplikasi desktop Windows untuk menyiapkan foto katalog produk dan memantau proses Generate dari satu tempat.
 
 [![Lisensi MIT](https://img.shields.io/badge/lisensi-MIT-8b2040)](LICENSE) ![Windows x64](https://img.shields.io/badge/platform-Windows%20x64-24569c) ![Versi sumber](https://img.shields.io/badge/versi-0.3.12-555555)
