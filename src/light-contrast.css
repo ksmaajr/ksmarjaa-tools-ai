@@ -1,0 +1,92 @@
+html[data-theme=light]{--text-strong:#2b2730;--text-body:#3e3943;--text-muted:#58525d;--text-soft:#69636e;--line:rgba(42,36,48,.16)}
+html[data-theme=light] body,html[data-theme=light] .shell{color:#38333d}
+html[data-theme=light] .breadcrumb,html[data-theme=light] .breadcrumb span,html[data-theme=light] .page-header p,html[data-theme=light] .nav-caption,html[data-theme=light] .nav-index,html[data-theme=light] .local-note,html[data-theme=light] .local-note small,html[data-theme=light] .version,html[data-theme=light] .section-kicker,html[data-theme=light] .eyebrow,html[data-theme=light] .metric-note,html[data-theme=light] .empty-state p,html[data-theme=light] .empty-caption,html[data-theme=light] .results-footer,html[data-theme=light] .action-footnote,html[data-theme=light] .source-bottom,html[data-theme=light] .statusbar,html[data-theme=light] .format-note,html[data-theme=light] .page-guide,html[data-theme=light] .page-guide p,html[data-theme=light] .guide-output,html[data-theme=light] .guide-output code{color:var(--text-muted)}
+html[data-theme=light] .setting-field label,html[data-theme=light] .setting-field small,html[data-theme=light] .toggle-row small,html[data-theme=light] .key-helper small,html[data-theme=light] .field-helper,html[data-theme=light] .gen-field>label,html[data-theme=light] .gen-field small,html[data-theme=light] .source-verify small,html[data-theme=light] .model-line,html[data-theme=light] .server-note,html[data-theme=light] .batch-fact,html[data-theme=light] .output-card small,html[data-theme=light] .output-card code,html[data-theme=light] .eta-chip,html[data-theme=light] .progress-context,html[data-theme=light] .progress-stage,html[data-theme=light] .queue-footer,html[data-theme=light] .queue-range,html[data-theme=light] .queue-active-hint,html[data-theme=light] .job-number,html[data-theme=light] .job-description small,html[data-theme=light] .job-status,html[data-theme=light] .result-info,html[data-theme=light] .readiness-summary,html[data-theme=light] .readiness-item small,html[data-theme=light] .activity-message p,html[data-theme=light] .activity-time,html[data-theme=light] .activity-footer,html[data-theme=light] .activity-category-label,html[data-theme=light] .manifest-root,html[data-theme=light] .manifest-file,html[data-theme=light] .manifest-facts,html[data-theme=light] .manifest-table td,html[data-theme=light] .manifest-table small,html[data-theme=light] .manifest-card small,html[data-theme=light] .manifest-pagination,html[data-theme=light] .manifest-detail dt,html[data-theme=light] .manifest-detail dd,html[data-theme=light] .manifest-ready,html[data-theme=light] .ml-caption,html[data-theme=light] .ml-flow,html[data-theme=light] .settings-guide p,html[data-theme=light] .appearance-guide p{color:var(--text-muted)}
+html[data-theme=light] .settings-card-note,html[data-theme=light] .connection-footnote,html[data-theme=light] .fixed-endpoint-note,html[data-theme=light] .website-fixed span,html[data-theme=light] .retry-preview,html[data-theme=light] .output-preview small{color:var(--text-muted)}
+html[data-theme=light] .metric-label,html[data-theme=light] .product-title,html[data-theme=light] .manifest-product-title,html[data-theme=light] .manifest-facts strong,html[data-theme=light] .manifest-table strong,html[data-theme=light] .manifest-detail dd,html[data-theme=light] .activity-message h3,html[data-theme=light] .job-description strong,html[data-theme=light] .readiness-item b,html[data-theme=light] .source-info h2{color:var(--text-strong)}
+html[data-theme=light] .nav-item{color:#514b56}
+html[data-theme=light] .nav-item:hover{color:#2d2932;background:#34303a0a}
+html[data-theme=light] input::placeholder,html[data-theme=light] textarea::placeholder{color:#6d6672;opacity:1}
+html[data-theme=light] input:disabled,html[data-theme=light] select:disabled,html[data-theme=light] textarea:disabled{background:#e9e8ec;color:#59535f;opacity:1}
+html[data-theme=light] button:disabled,html[data-theme=light] .button:disabled{opacity:.65;color:#5a545f}
+html[data-theme=light] .button.primary:disabled{background:linear-gradient(120deg,#a43b4c,#8c2f40);color:#fff;border-color:#8d2a3b55;opacity:.72}
+html[data-theme=light] .tabs button,html[data-theme=light] .text-button,html[data-theme=light] .icon-button,html[data-theme=light] .settings-tab{color:#57515c}
+html[data-theme=light] th,html[data-theme=light] .manifest-table th{color:#504a55;background:#f2f1f4}
+html[data-theme=light] td,html[data-theme=light] .manifest-table td{color:#3d3841;border-bottom-color:#35303b1b}
+html[data-theme=light] .queue-empty,html[data-theme=light] .manifest-empty h3,html[data-theme=light] .manifest-empty p{color:#514b56}
+html[data-theme=light] .job-status.completed,html[data-theme=light] .ready-label{color:#24783b}
+html[data-theme=light] .job-status.failed,html[data-theme=light] .job-status.ambiguous,html[data-theme=light] .issue-label,html[data-theme=light] .issue-message{color:#a22d39}
+html[data-theme=light] .job-status.queued,html[data-theme=light] .job-status.waiting,html[data-theme=light] .job-status.cancelled{color:#625b67}
+html[data-theme=light] .activity-row{border-bottom-color:#322d371d}
+html[data-theme=light] .activity-search{background:#ffffff;border-color:#3a34421f;color:#554e5a}
+html[data-theme=light] .activity-search input{color:#302c35}
+html[data-theme=light] .activity-search input::placeholder{color:#69636e}
+html[data-theme=light] .activity-toolbar select{background:#fff;color:#39343e;border-color:#38323f2b;color-scheme:light}
+html[data-theme=light] .manifest-card{background:#ffffff;border-color:#39333e20;color:#332f37}
+html[data-theme=light] .manifest-card:hover{background:#fff;border-color:#9f34474a;box-shadow:0 8px 22px #3f26300f}
+html[data-theme=light] .manifest-card.viewed{background:linear-gradient(125deg,#c32e4510,#ffffff);border-color:#bb3a4d4e}
+html[data-theme=light] .manifest-table th{background:#f0eff2}
+html[data-theme=light] .manifest-table tbody tr:hover{background:#52465308}
+html[data-theme=light] .activity-list,html[data-theme=light] .manifest-content,html[data-theme=light] .manifest-library,html[data-theme=light] .queue-list{background:#ffffff}
+html[data-theme=light] dialog,html[data-theme=light] .reset-confirm-dialog,html[data-theme=light] .manifest-delete-dialog{background:linear-gradient(145deg,#fff,#f3f2f5);color:#312c36;border-color:#4a3b4b24}
+html[data-theme=light] dialog p,html[data-theme=light] .reset-confirm-card>p,html[data-theme=light] .manifest-delete-card>p{color:#514b56}
+html[data-theme=light] pre{background:#f3f2f5;color:#3e3943;border-color:#463d491f}
+html[data-theme=light] #generate-view{color:#39343d}
+html[data-theme=light] #generate-view .breadcrumb,html[data-theme=light] #generate-view .breadcrumb span{color:#5d5662}
+html[data-theme=light] #generate-view h1,html[data-theme=light] #generate-view .generate-section-title h2,html[data-theme=light] #generate-view .progress-card-head h2,html[data-theme=light] #generate-view .queue-heading h2,html[data-theme=light] #generate-view .readiness-head h3{color:#2d2932}
+html[data-theme=light] #generate-view .generate-page-head p,html[data-theme=light] #generate-view .generate-section-title p,html[data-theme=light] #generate-view .gen-field>label,html[data-theme=light] #generate-view .field-label,html[data-theme=light] #generate-view .field-helper,html[data-theme=light] #generate-view .template-field>small,html[data-theme=light] #generate-view .model-line,html[data-theme=light] #generate-view .server-note,html[data-theme=light] #generate-view .source-verify small,html[data-theme=light] #generate-view .source-verify strong{color:#514a56}
+html[data-theme=light] #generate-view .generate-main,html[data-theme=light] #generate-view .generate-side{background:linear-gradient(145deg,#fffffff0,#f7f6f8e8 43%,#eeedf1d9);border-color:#3e35451d;box-shadow:0 12px 32px #34303a0c,inset 0 1px #fff}
+html[data-theme=light] #generate-view .generate-setup-card{background:linear-gradient(140deg,#f7f6f9,#f0eff3);border-color:#3933411c}
+html[data-theme=light] #generate-view .gen-field select{background:#fff;color:#332e38;border-color:#39334036;color-scheme:light}
+html[data-theme=light] #generate-view .gen-field select:disabled{background:#eeedf1;color:#625b67;opacity:1}
+html[data-theme=light] #generate-view .source-verify{background:#fff;border-color:#39334128;color:#3c3641}
+html[data-theme=light] #generate-view .source-verify.verified{background:#eef8f0;border-color:#4a9b5b55}
+html[data-theme=light] #generate-view .source-verify .verify-mark{color:#278640}
+html[data-theme=light] #generate-view .template-selection{background:#fff;border-color:#39334124}
+html[data-theme=light] #generate-view .template-selection.template-ready{background:#eff8f1;border-color:#4a9b5b48}
+html[data-theme=light] #generate-view .template-selection>strong{color:#37313b}
+html[data-theme=light] #generate-view .template-badge,html[data-theme=light] #generate-view .template-ready .template-badge{color:#287c3d}
+html[data-theme=light] #generate-view .batch-strip{background:linear-gradient(105deg,#fbecef,#fff8f9);border-color:#c33a4b38}
+html[data-theme=light] #generate-view .batch-count strong{color:#743240}
+html[data-theme=light] #generate-view .batch-fact{border-left-color:#44394220;color:#4d4651}
+html[data-theme=light] #generate-view .batch-fact>svg{color:#74616d}
+html[data-theme=light] #generate-view .batch-fact.auto-download b{color:#287c3d}
+html[data-theme=light] #generate-view .batch-fact.auto-download.is-off b{color:#5b5560}
+html[data-theme=light] #generate-view .output-card,html[data-theme=light] #generate-view .progress-card{background:linear-gradient(145deg,#fff,#f6f5f7);border-color:#3b35421f}
+html[data-theme=light] #generate-view .output-card h3,html[data-theme=light] #generate-view .progress-value-row strong,html[data-theme=light] #generate-view .progress-value-row>b{color:#302c35}
+html[data-theme=light] #generate-view .output-card-head>svg{color:#8b4352}
+html[data-theme=light] #generate-view .output-card code{color:#514a56}
+html[data-theme=light] #generate-view .eta-chip{background:#fff;border-color:#433d481e;color:#514a56}
+html[data-theme=light] #generate-view .progress-context,html[data-theme=light] #generate-view .progress-context span,html[data-theme=light] #generate-view .progress-stage,html[data-theme=light] #generate-view .generate-actions>span{color:#514a56}
+html[data-theme=light] #generate-view .queue-running-badge{background:#fff;border-color:#433d4824;color:#514a56}
+html[data-theme=light] #generate-view .queue-columns{background:#eeedf1;border-color:#39334120;color:#49434e}
+html[data-theme=light] #generate-view .queue-list{background:#fff;border-color:#39334120}
+html[data-theme=light] #generate-view .queue-footer{color:#57515c}
+html[data-theme=light] #generate-view .queue-empty{color:#39343d}
+html[data-theme=light] #generate-view .queue-empty>svg{color:#9a4055;opacity:1}
+html[data-theme=light] #generate-view .queue-empty strong{color:#302c35;font-size:12px}
+html[data-theme=light] #generate-view .queue-empty span{color:#514a56;font-size:10px}
+html[data-theme=light] #generate-view .queue-batch-head #queue-range,html[data-theme=light] #generate-view .queue-active-hint{color:#514a56;font-weight:600}
+html[data-theme=light] #generate-view .queue-subtitle,html[data-theme=light] #generate-view #queue-subtitle{color:#514a56;font-weight:500}
+html[data-theme=light] #generate-view .queue-footer{color:#514a56}
+html[data-theme=light] #generate-view .readiness-item small{color:#514a56}
+html[data-theme=light] #generate-view .readiness-item b{color:#302c35}
+html[data-theme=light] #generate-view .readiness-summary{color:#514a56}
+html[data-theme=light] #generate-view .readiness-eyebrow{color:#96384b}
+html[data-theme=light] #generate-view .job-row{border-bottom-color:#37303b14}
+html[data-theme=light] #generate-view .job-description strong{color:#302c35}
+html[data-theme=light] #generate-view .job-description small{color:#5c5661}
+html[data-theme=light] #generate-view .job-number{color:#625b67}
+html[data-theme=light] #generate-view .job-status{color:#514a56}
+html[data-theme=light] #generate-view .job-status.completed{color:#24783b}
+html[data-theme=light] #generate-view .job-status.failed,html[data-theme=light] #generate-view .job-status.ambiguous{color:#a22d39}
+html[data-theme=light] #generate-view .job-status.queued,html[data-theme=light] #generate-view .job-status.waiting,html[data-theme=light] #generate-view .job-status.cancelled{color:#625b67}
+html[data-theme=light] #generate-view .result-info{color:#514a56}
+html[data-theme=light] #generate-view .api-connected{background:#fff;border-color:#48404b2b;color:#514a56}
+html[data-theme=light] #generate-view .api-connected.online{background:#eff8f1;border-color:#42935255;color:#287c3d}
+html[data-theme=light] #generate-view .api-connected.offline{background:#fff5e7;border-color:#b77b3845;color:#7b571f}
+html[data-theme=light] #notifications .floating-notice{background:rgba(255,255,255,.98);border-color:#3b354226;box-shadow:0 12px 34px #28232d24}
+html[data-theme=light] #notifications .notice-content strong{color:#302c35}
+html[data-theme=light] #notifications .notice-content p{color:#514a56}
+html[data-theme=light] #notifications .notice-close{color:#625b67}
+html[data-theme=light] #notifications .notice-log{color:#7d3242}

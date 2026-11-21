@@ -1,0 +1,10 @@
+{
+  "baseUrl": "https://rizkymotoshop.my.id",
+  "storesPath": "/api/v1/catalog/stores",
+  "templatesPath": "/api/v1/catalog/stores/{store}/templates",
+  "modelsPath": "/api/v1/catalog/models",
+  "generationsPath": "/api/v1/images/generations",
+  "generationStatusPath": "/api/v1/images/generations/{generation}",
+  "generationImagePath": "/api/v1/images/generations/{generation}/images/{image}",
+  "generationCancelPath": "/api/v1/images/generations/{generation}/cancel"
+}

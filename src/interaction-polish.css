@@ -1,0 +1,30 @@
+button,a,input,select,textarea,summary,.nav-item,.glass,.settings-card,.manifest-card,.activity-row,.job-row,.output-card,.progress-card,.template-selection,.readiness-item,.settings-tab{transition:color .2s ease,background-color .2s ease,border-color .2s ease,box-shadow .24s ease,transform .22s cubic-bezier(.2,.75,.25,1),opacity .2s ease}
+button:not(:disabled):active{transform:translateY(1px) scale(.985)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid #d94158;outline-offset:3px;box-shadow:0 0 0 5px #d9415818}
+.nav-item:not(:disabled):hover{transform:translateX(2px)}
+.button:not(:disabled):hover,.icon-button:not(:disabled):hover{transform:translateY(-1px)}
+.settings-tab:hover,.tabs button:hover,.page-guide summary:hover,.settings-guide summary:hover,.appearance-guide summary:hover{color:#bf334b}
+.settings-card:hover,.manifest-library:hover,.manifest-content:hover,.activity-list:hover{border-color:#c5324624}
+.setting-field input:not(:disabled):hover,.setting-field select:not(:disabled):hover,.gen-field select:not(:disabled):hover,.activity-toolbar select:hover{border-color:#b83b5045}
+.setting-field input:focus-visible,.setting-field select:focus-visible,.gen-field select:focus-visible,.activity-search:focus-within{border-color:#c43b514f;box-shadow:0 0 0 3px #c43b5115}
+.activity-row:hover{background:#ffffff08;transform:translateX(2px)}
+.job-row:hover{background:#ffffff07;border-color:#d24b5b28}
+.manifest-card:hover,.output-card:hover,.template-selection:hover{transform:translateY(-1px)}
+.readiness-item:hover{transform:translateY(-1px);border-color:#d14d6036}
+.readiness-recheck:not(:disabled):active{transform:scale(.97)}
+.button svg,.nav-item svg,.settings-tab svg,.activity-row svg,.manifest-card svg{transition:transform .22s ease,color .2s ease}
+.button:not(:disabled):hover svg,.nav-item:not(:disabled):hover svg{transform:scale(1.08)}
+.settings-guide summary:after,.appearance-guide summary:after,.page-guide summary:after{transition:transform .25s cubic-bezier(.2,.75,.25,1),color .2s ease}
+.settings-guide[open] summary:after,.appearance-guide[open] summary:after,.page-guide[open] summary:after{transform:rotate(45deg)}
+.settings-guide[open],.appearance-guide[open],.page-guide[open]{animation:polish-reveal .24s ease both}
+.progress-card:has(.generate-progress-track.is-active){animation:polish-progress-glow 2.5s ease-in-out infinite alternate}
+@keyframes polish-page-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes polish-reveal{from{opacity:.75;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+@keyframes polish-progress-glow{from{box-shadow:0 0 0 #ed536800}to{box-shadow:0 0 22px #ed53680d}}
+html[data-theme=light] .nav-item:not(:disabled):hover{background:#b7354d0b;box-shadow:inset 0 0 0 1px #b7354d10}
+html[data-theme=light] .activity-row:hover{background:#ffffff;box-shadow:0 5px 16px #28232d0a}
+html[data-theme=light] .job-row:hover{background:#fff;border-color:#bd3c4d35}
+html[data-theme=light] .readiness-item:hover{background:#fff;border-color:#ad3e4d38;box-shadow:0 4px 12px #3328330a}
+html[data-theme=light] .settings-card:hover,html[data-theme=light] .manifest-library:hover,html[data-theme=light] .manifest-content:hover,html[data-theme=light] .activity-list:hover{border-color:#7d39471f}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) *,html:not([data-motion=full]) *:before,html:not([data-motion=full]) *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+html[data-motion=reduced] *,html[data-motion=reduced] *:before,html[data-motion=reduced] *:after,html[data-motion=off] *,html[data-motion=off] *:before,html[data-motion=off] *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}

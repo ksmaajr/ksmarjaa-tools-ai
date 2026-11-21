@@ -1,0 +1,21 @@
+import {test,expect}from'@playwright/test';
+test('floating notifications, persistent activity, redaction, filtering and export',async({page})=>{
+  await page.route('https://rizkymotoshop.my.id/api/v1/catalog/stores',route=>route.fulfill({status:401,contentType:'application/json',body:'{"message":"Invalid API key"}'}));
+  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');await page.getByRole('button',{name:'Pengaturan',exact:true}).click();await page.getByLabel('API key',{exact:true}).fill('rms_live_dummy-not-a-real-key');
+  await page.getByRole('button',{name:'Uji koneksi'}).click();await expect(page.locator('#notifications .notice-error')).toBeVisible();
+  await page.screenshot({path:'artifacts/notifikasi-melayang.png',animations:'disabled'});
+  await expect(page.locator('#notifications .notice-error strong')).toHaveText('API key tidak valid');
+  const position=await page.locator('#notifications').boundingBox();expect(position!.x).toBeGreaterThan(900);expect(position!.y).toBeGreaterThan(40);
+  await page.locator('#notifications .notice-error').getByRole('button',{name:'Lihat aktivitas'}).click();await expect(page.getByRole('heading',{name:'Log aktivitas'})).toBeVisible();
+  await expect(page.locator('#activity-list')).toContainText('API key tidak valid');await expect(page.locator('#activity-list')).not.toContainText('rms_live_dummy-not-a-real-key');
+  await page.getByRole('combobox',{name:'Status aktivitas'}).selectOption('error');await expect(page.locator('.activity-row')).toHaveCount(1);
+  await page.getByRole('textbox',{name:'Cari aktivitas'}).fill('tidak ditemukan');await expect(page.locator('.activity-row')).toHaveCount(0);await page.getByRole('textbox',{name:'Cari aktivitas'}).fill('');
+  await page.reload();await expect(page.getByRole('heading',{name:'Log aktivitas'})).toBeVisible();await expect(page.locator('#activity-list')).toContainText('API key tidak valid');
+  const downloadPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Ekspor log'}).click();const download=await downloadPromise;expect(download.suggestedFilename()).toContain('ksmarjaa-activity-');
+  await expect(page.locator('#notifications .notice-success')).toBeVisible();await page.locator('#notifications .notice-success').getByRole('button',{name:'Tutup notifikasi'}).click();await expect(page.locator('#notifications .notice-success')).toHaveCount(0);
+  await page.screenshot({path:'artifacts/log-aktivitas.png',animations:'disabled'});
+  await page.getByRole('button',{name:'Hapus riwayat',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();await page.getByRole('dialog').getByRole('button',{name:'Batalkan'}).click();await expect(page.locator('.activity-row').first()).toBeVisible();
+  await page.getByRole('button',{name:'Hapus riwayat',exact:true}).click();await page.getByRole('dialog').getByRole('button',{name:'Hapus riwayat',exact:true}).click();await expect(page.locator('#activity-list')).toContainText('Belum ada aktivitas');
+  expect(errors).toEqual([]);
+});

@@ -1,0 +1,12 @@
+import {describe,it,expect} from 'vitest';
+import {defaults,migrateSettings,validateSettings,validateKey,keyTarget} from './settings-model';
+import {RMS_API,parseStores} from './api-contract';
+describe('settings validation',()=>{
+  it('accepts defaults and local development URLs',()=>{expect(validateSettings({...defaults})).toEqual({});expect(validateSettings({...defaults,baseUrl:'http://127.0.0.1:8765'})).toEqual({});});
+  it('rejects credential-bearing URLs, insecure remote HTTP and external endpoint paths',()=>{for(const baseUrl of ['http://example.com','https://key@example.com','https://example.com?token=x','file:///C:/test'])expect(validateSettings({...defaults,baseUrl})).toHaveProperty('baseUrl');for(const apiTestPath of ['//other.example/check','https://other.example','/check?key=x','/check#x'])expect(validateSettings({...defaults,apiTestPath})).toHaveProperty('apiTestPath');});
+  it('rejects invalid queue limits and invalid retry timing',()=>{for(const n of [0,1.5,NaN,1001])expect(validateSettings({...defaults,batchSize:n})).toHaveProperty('batchSize');expect(validateSettings({...defaults,retryInitialSeconds:60,retryMaxSeconds:5})).toHaveProperty('retryMaxSeconds');});
+  it('normalizes credential target without sharing across websites or base paths',()=>{expect(keyTarget('https://EXAMPLE.com/')).toBe(keyTarget('https://example.com'));expect(keyTarget('https://example.com/other')).not.toBe(keyTarget('https://example.com'));expect(keyTarget('https://other.com')).not.toBe(keyTarget('https://example.com'));});
+  it('rejects empty, whitespace and header injection keys',()=>{for(const key of ['', 'a b','a\r\nb','a'.repeat(2049)])expect(validateKey(key)).not.toBe('');expect(validateKey('test-only-dummy-token')).toBe('');});
+  it('migrates legacy URLs while retaining user queue settings',()=>{const settings=migrateSettings({...defaults,baseUrl:'https://other.example',apiTestPath:'/api/tools/auth-check',batchSize:25});expect(settings.baseUrl).toBe(RMS_API.baseUrl);expect(settings.apiTestPath).toBe('/api/v1/catalog/stores');expect(settings.batchSize).toBe(25);});
+  it('accepts catalog responses including an empty catalog and rejects the old invented auth contract',()=>{expect(parseStores({data:[{id:1,name:'Rizky Moto',templates_count:1}]})).toHaveLength(1);expect(parseStores({data:[]})).toEqual([]);for(const value of [{authenticated:true},{data:[{id:0,name:'Wrong'}]},{data:[{id:1,name:''}]},{data:'Wrong'}])expect(parseStores(value)).toBeNull();});
+});

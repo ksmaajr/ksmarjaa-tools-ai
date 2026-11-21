@@ -1,0 +1,58 @@
+.page-guide{flex:none;margin:-9px 0 17px;padding:0 14px;border:1px solid #ffffff12;border-radius:9px;background:#ffffff04;color:#bcb5c2}
+.page-guide summary{min-height:38px;display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;color:#ddd5e1;font-size:11px;font-weight:600}
+.page-guide summary::-webkit-details-marker{display:none}
+.page-guide summary:after{content:'+';margin-left:auto;color:#ef7182;font-size:16px;transition:transform .2s ease}
+.page-guide[open] summary:after{transform:rotate(45deg)}
+.page-guide summary svg{width:15px;height:15px;color:#e9687b}
+.page-guide ol{margin:0 0 13px;padding:12px 0 0 24px;border-top:1px solid #ffffff0b;display:grid;gap:7px;color:#aaa2b0;font-size:10px;line-height:1.65;animation:guide-reveal .22s ease both}
+.page-guide li{padding-left:3px}
+.page-guide b{color:#e5dce6;font-weight:600}
+.generate-guide{margin:-10px 0 15px}
+@media(max-width:900px){.page-guide{margin-top:-5px}.page-guide ol{font-size:10px}}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) .page-guide *{animation:none!important;transition:none!important}}
+html[data-motion="off"] .page-guide *,html[data-motion="reduced"] .page-guide *{animation:none!important;transition:none!important}
+
+html[data-theme=light] .page-guide{background:#fff;border-color:#29232d20;box-shadow:0 4px 16px #25212b08;color:#55505a}
+html[data-theme=light] .page-guide summary{color:#302c34}
+html[data-theme=light] .page-guide summary:after{color:#a3233b}
+html[data-theme=light] .page-guide summary svg{color:#ad2940}
+html[data-theme=light] .page-guide ol{border-color:#29232d14;color:#504b55}
+html[data-theme=light] .page-guide b{color:#29252d}
+
+html[data-theme=light] #generate-view select,html[data-theme=light] #activity-view select,html[data-theme=light] #settings-view select,html[data-theme=light] #manifest-view select{color-scheme:light;background-color:#fff;color:#29252d;border-color:#342f3826}
+html[data-theme=light] #generate-view select option,html[data-theme=light] #activity-view select option,html[data-theme=light] #settings-view select option,html[data-theme=light] #manifest-view select option{background:#fff;color:#29252d}
+html[data-theme=light] #generate-view .generate-setup-card,html[data-theme=light] #generate-view .batch-strip,html[data-theme=light] #generate-view .output-card,html[data-theme=light] #generate-view .progress-card,html[data-theme=light] #generate-view .queue-batch-head{color:#302c34}
+html[data-theme=light] #generate-view .template-selection,html[data-theme=light] #generate-view .source-verify{background:#f6f7f8;color:#37323b}
+html[data-theme=light] #generate-view .template-selection strong,html[data-theme=light] #generate-view .source-verify strong,html[data-theme=light] #generate-view .job-description strong{color:#302c34}
+html[data-theme=light] #generate-view .queue-table th,html[data-theme=light] #generate-view .queue-columns{background:#f0f1f3;color:#49444e;border-color:#302b351c}
+html[data-theme=light] #generate-view .job-row{border-color:#302b3515;background:#ffffff58}
+html[data-theme=light] #generate-view .job-description small,html[data-theme=light] #generate-view .job-number{color:#625d67}
+html[data-theme=light] #generate-view .queue-footer,html[data-theme=light] #generate-view .progress-stage,html[data-theme=light] #generate-view .progress-context{color:#5e5963}
+html[data-theme=light] #generate-view .job-status{color:#514b55;background:#f3f2f4;border-color:#302b3525}
+html[data-theme=light] #generate-view .job-status.completed{color:#246b36;background:#eaf6ed;border-color:#73ad7f65}
+html[data-theme=light] #generate-view .job-status.processing,html[data-theme=light] #generate-view .job-status.sending{color:#a2263a;background:#fff0f2;border-color:#d6536760}
+html[data-theme=light] #generate-view .job-status.downloading{color:#68418a;background:#f5effa;border-color:#9676b360}
+html[data-theme=light] #generate-view .job-status.failed,html[data-theme=light] #generate-view .job-status.ambiguous{color:#9c2934;background:#fff0f0;border-color:#d35b6260}
+html[data-theme=light] #generate-view .job-status.waiting,html[data-theme=light] #generate-view .job-status.queued{color:#62521e;background:#fbf6e9;border-color:#c8a74255}
+html[data-theme=light] #generate-view .job-status.cancelled{color:#605467;background:#f3eff5;border-color:#9f8aac55}
+html[data-theme=light] #generate-view button:disabled,html[data-theme=light] #activity-view button:disabled,html[data-theme=light] #settings-view button:disabled,html[data-theme=light] #manifest-view button:disabled{opacity:.78;color:#716b75;filter:none}
+html[data-theme=light] #manifest-view .manifest-table thead,html[data-theme=light] #manifest-view .manifest-table th{background:#f0f1f3;color:#49444e}
+html[data-theme=light] #manifest-view .manifest-table td{color:#504b55}
+html[data-theme=light] #manifest-view .manifest-product-title,html[data-theme=light] #manifest-view .manifest-table strong{color:#302c34}
+html[data-theme=light] #manifest-view .manifest-table tbody tr:hover{background:#f5f3f5}
+html[data-theme=light] #analysis-view .rules,html[data-theme=light] #analysis-view .action-panel,html[data-theme=light] #analysis-view .results-body{color:#37333b}
+html[data-theme=light] #analysis-view th{background:#f0f1f3;color:#49444e}
+html[data-theme=light] #analysis-view .product-title{color:#302c34}
+html[data-theme=light] #analysis-view .issue-message,html[data-theme=light] #analysis-view .issue-label{color:#81511b}
+html[data-theme=light] .settings-guide,html[data-theme=light] .appearance-guide{color:#4e4952}
+html[data-theme=light] .settings-guide summary,html[data-theme=light] .appearance-guide summary{color:#302c34}
+html[data-theme=light] .settings-guide p,html[data-theme=light] .appearance-guide p{color:#514c56}
+html[data-theme=light] .setting-field label,html[data-theme=light] .setting-subheading,html[data-theme=light] .toggle-row>span,html[data-theme=light] .website-fixed strong,html[data-theme=light] .connection-footnote,html[data-theme=light] .status-heading,html[data-theme=light] .fixed-endpoint-note,html[data-theme=light] .settings-storage,html[data-theme=light] .settings-savebar,html[data-theme=light] .settings-savebar small{color:#413c45}
+html[data-theme=light] .settings-card-note,html[data-theme=light] .setting-field small,html[data-theme=light] .toggle-row small,html[data-theme=light] .key-helper small,html[data-theme=light] .retry-preview{color:#5b5660}
+html[data-theme=light] #activity-view .activity-search{background:#fff;color:#554f59;border-color:#302b3520}
+html[data-theme=light] #activity-view .activity-search input{color:#302c34}
+html[data-theme=light] #activity-view .activity-search input::placeholder{color:#746e78}
+html[data-theme=light] #activity-view .activity-list{background:#fff}
+html[data-theme=light] #activity-view .activity-row{background:linear-gradient(90deg,var(--activity-tint),transparent 68%)}
+html[data-theme=light] #analysis-view .source-bottom,html[data-theme=light] #analysis-view .result-toolbar,html[data-theme=light] #analysis-view .empty-caption,html[data-theme=light] #analysis-view .action-footnote{color:#5d5862}
+html[data-theme=light] #analysis-view .action-panel .button:disabled{color:#655d67;background:#f0e8ea;border-color:#d4c6c9}

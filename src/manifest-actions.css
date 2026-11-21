@@ -1,0 +1,24 @@
+#manifest-view .manifest-summary-head{gap:18px;align-items:center}
+#manifest-view .manifest-summary-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+#manifest-view .manifest-summary-actions .button{min-height:37px;justify-content:center;gap:7px;white-space:nowrap;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}
+#manifest-view .button.danger-outline{border:1px solid #ed536847;background:#ed53680b;color:#e99aa5}
+#manifest-view .button.danger-outline:hover{transform:translateY(-1px);border-color:#ed53689a;background:#ed536819}
+#manifest-view .button.danger{border:1px solid #ff829036;background:linear-gradient(110deg,#c5364d,#a9263c);color:#fff;box-shadow:0 7px 20px #b42a4135}
+#manifest-view .button.danger:hover{transform:translateY(-1px);box-shadow:0 10px 24px #b42a4145}
+#manifest-view .manifest-delete-dialog{width:min(430px,calc(100vw - 32px));max-width:430px;padding:0;border:1px solid #ed536847;border-radius:18px;background:linear-gradient(145deg,#201b20f7,#111114fc);color:#eee9f0;box-shadow:0 28px 90px #000b;overflow:visible;opacity:0;transform:translateY(12px) scale(.97);transition:opacity .22s ease,transform .28s cubic-bezier(.2,.75,.2,1)}
+#manifest-view .manifest-delete-dialog[open]{opacity:1;transform:translateY(0) scale(1)}
+#manifest-view .manifest-delete-dialog::backdrop{background:#08070ab8;backdrop-filter:blur(7px);animation:manifest-backdrop-in .2s ease both}
+#manifest-view .manifest-delete-card{display:grid;justify-items:center;padding:25px;text-align:center}
+#manifest-view .manifest-delete-icon{display:grid;place-items:center;width:48px;height:48px;margin-bottom:13px;border:1px solid #ed536858;border-radius:15px;background:linear-gradient(145deg,#ed536824,#ed53680a);color:#ff8797;animation:manifest-icon-in .45s cubic-bezier(.2,.8,.2,1) both}
+#manifest-view .manifest-delete-icon svg{width:22px;height:22px}
+#manifest-view .manifest-delete-card .section-kicker{color:#dc8a99;font-size:8px;font-weight:750;letter-spacing:.16em}
+#manifest-view .manifest-delete-card h2{margin:8px 0 6px;color:#f5f1f6;font-size:19px;font-weight:700;letter-spacing:-.035em}
+#manifest-view .manifest-delete-card>p{max-width:340px;margin:0;color:#aaa2ae;font-size:11px;line-height:1.65}
+#manifest-view .manifest-delete-note{display:flex;align-items:flex-start;gap:9px;width:100%;margin-top:15px;padding:11px 12px;border:1px solid #ffffff12;border-radius:9px;background:#ffffff05;color:#bdb5c1;font-size:9px;line-height:1.55;text-align:left}
+#manifest-view .manifest-delete-note svg{width:15px;height:15px;flex:none;color:#8bd49a}
+#manifest-view .manifest-delete-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-top:19px}
+#manifest-view .manifest-delete-actions button{justify-content:center;min-height:38px;font-size:10px}
+@keyframes manifest-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes manifest-icon-in{from{opacity:0;transform:rotate(-12deg) scale(.8)}to{opacity:1;transform:rotate(0) scale(1)}}
+@media(max-width:700px){#manifest-view .manifest-summary-head{align-items:flex-start;flex-direction:column}#manifest-view .manifest-summary-actions{width:100%;justify-content:flex-start}}
+@media(prefers-reduced-motion:reduce){html:not([data-motion=full]) #manifest-view .manifest-delete-dialog::backdrop,html:not([data-motion=full]) #manifest-view .manifest-delete-icon{animation:none!important}}

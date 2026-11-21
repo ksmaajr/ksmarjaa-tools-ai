@@ -1,0 +1,14 @@
+#activity-view .activity-toolbar select{color-scheme:dark;background-color:#17151a;color:#d7d0da}
+#activity-view .activity-toolbar select option{background:#18161b;color:#e9e3ec}
+#activity-view .activity-toolbar select option:checked{background:#48202b;color:#fff}
+#activity-view .activity-row{position:relative;transition:background .2s ease,box-shadow .2s ease}
+#activity-view .activity-row:hover{background:#ffffff06}
+#activity-view .activity-row.activity-success{--activity-accent:#72d18b;--activity-tint:#4fc46d0d}
+#activity-view .activity-row.activity-error{--activity-accent:#ff7180;--activity-tint:#ef445912}
+#activity-view .activity-row.activity-warning{--activity-accent:#efbd70;--activity-tint:#d99a3210}
+#activity-view .activity-row.activity-info{--activity-accent:#8bb7ff;--activity-tint:#5b8ff00d}
+#activity-view .activity-row{background:linear-gradient(90deg,var(--activity-tint),transparent 38%);box-shadow:inset 3px 0 var(--activity-accent)}
+#activity-view .activity-level-icon{color:var(--activity-accent);border-color:color-mix(in srgb,var(--activity-accent) 22%,transparent);background:color-mix(in srgb,var(--activity-accent) 8%,transparent)}
+#activity-view .activity-message h3{color:color-mix(in srgb,var(--activity-accent) 45%,#e8e3eb)}
+#activity-view .activity-category-label{border-color:color-mix(in srgb,var(--activity-accent) 23%,transparent);color:color-mix(in srgb,var(--activity-accent) 70%,#b8aebe);background:color-mix(in srgb,var(--activity-accent) 5%,transparent)}
+#activity-view .activity-message p{color:#b6aebc}

@@ -1,0 +1,87 @@
+import { manifest, type ScanResult, type Product } from './scanner';
+import { desktop } from './source';
+import './manifest.css';
+import './manifest-actions.css';
+import {publish} from './activity';
+
+type Document = ReturnType<typeof manifest>;
+type Record = { id:string; name:string; file:string; savedAt:string; data:Document };
+const KEY='ksmarjaa:manifests:v1', ACTIVE='ksmarjaa:active-manifest';
+const escape=(v:unknown)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+const icon=(name:string)=>`<i data-lucide="${name}" aria-hidden="true"></i>`;
+const date=(v:string)=>{const d=new Date(v);return Number.isNaN(d.getTime())?'—':d.toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});};
+const safePath=(v:unknown,empty=false):v is string=>typeof v==='string'&&(empty||!!v)&&!/[\x00-\x1f]/.test(v)&&!v.startsWith('/')&&!v.includes('\\')&&!v.includes(':')&&!v.split('/').includes('..');
+function validate(value:unknown):Document {
+  const d=value as Document;
+  if(!d||d.schemaVersion!==1||d.status!=='ready'||typeof d.sourceRoot!=='string'||typeof d.sourceName!=='string'||!Number.isFinite(Date.parse(d.createdAt))||!Array.isArray(d.products)||!d.products.length||d.products.length>50000)throw new Error('File ini bukan manifest produk yang didukung.');
+  const ids=new Set<string>();
+  for(const p of d.products){
+    if(!p||typeof p.id!=='string'||ids.has(p.id)||p.status!=='ready'||typeof p.title!=='string'||!p.title.trim()||!safePath(p.folder,true)||!safePath(p.productPhoto)||!safePath(p.titleFile)||(p.installedPhoto!==null&&p.installedPhoto!==undefined&&!safePath(p.installedPhoto)))throw new Error('Manifest berisi data produk yang tidak valid.');
+    ids.add(p.id);
+    if(!p.identity||typeof p.identity!=='object')p.identity={brand:null,motorcycle:null,part:null,salesLabel:null,salesType:null,quantity:null,model:null};
+    for(const k of ['brand','motorcycle','part','salesLabel','model'] as const)if(p.identity[k]!==null&&typeof p.identity[k]!=='string')throw new Error('Identitas produk dalam manifest tidak valid.');
+    p.installedPhoto=p.installedPhoto||null;
+    p.referenceMode=p.referenceMode==='installed-only'?'installed-only':p.installedPhoto?'product-and-installed':'product-only';
+  }
+  return d;
+}
+export function mountManifest(root:HTMLElement, options:{icons:()=>void;notify:(message:string,error?:boolean)=>void;analyze:()=>void;count:(n:number)=>void;legacy:ScanResult|null;use:(id:string)=>void}) {
+  let records:Record[]=[];
+  try{records=(JSON.parse(localStorage.getItem(KEY)||'[]') as Record[]).filter(r=>{try{validate(r.data);return typeof r.id==='string'&&typeof r.name==='string'&&typeof r.file==='string';}catch{return false;}});}catch{/* Use an empty library if old storage is unreadable. */}
+  if(!records.length&&options.legacy?.products.length){try{records.push({id:crypto.randomUUID(),name:options.legacy.sourceName,file:'Manifest terakhir',savedAt:options.legacy.createdAt,data:validate(manifest(options.legacy))});}catch{/* Unsupported old cache. */}}
+  let selected=localStorage.getItem(ACTIVE)||'',opened=records.find(r=>r.id===selected)?.id||records[0]?.id||'',query='',page=0;
+  const current=()=>records.find(r=>r.id===opened);
+  function persist(){try{localStorage.setItem(KEY,JSON.stringify(records));localStorage.setItem(ACTIVE,selected);}catch{options.notify('Manifest tersimpan di file, tetapi riwayat aplikasi penuh. Buka kembali file manifest jika diperlukan.',true);}}
+  root.innerHTML=`<div class="breadcrumb">Ruang kerja ${icon('chevron-right')}<span>Manifest</span></div><header class="page-header"><div><h1>Manifest produk</h1><p>Kelola daftar produk yang siap digunakan untuk generate.</p></div><button class="button secondary" id="open-manifest">${icon('folder-open')} Buka manifest</button></header><section class="manifest-workspace"><aside class="manifest-library glass"><div class="ml-heading"><h2>Daftar manifest</h2><span class="count-badge" id="ml-count">0</span></div><p class="ml-caption">Satu file untuk satu folder sumber.</p><div id="manifest-list"></div><div class="ml-flow">${icon('layers-3')}<span>Pilih manifest <span>→</span> Pilih toko <span>→</span> Generate</span></div></aside><section class="manifest-content glass"><div id="manifest-summary"></div><div class="manifest-tools"><label class="search-box">${icon('search')}<input id="manifest-search" placeholder="Cari judul, motor, atau folder" aria-label="Cari produk manifest"></label><span id="manifest-match"></span></div><div class="manifest-table" id="manifest-table"></div><footer class="manifest-pagination"><span id="manifest-range"></span><div><button class="icon-button" id="manifest-prev" aria-label="Halaman sebelumnya">${icon('chevron-left')}</button><span id="manifest-page"></span><button class="icon-button" id="manifest-next" aria-label="Halaman berikutnya">${icon('chevron-right')}</button></div></footer></section></section><footer class="statusbar"><span>${icon('shield')} Foto asli tetap di folder sumber</span><span id="manifest-active"></span></footer><dialog class="manifest-detail"><div class="dialog-head"><div><span class="section-kicker">DETAIL PRODUK</span><h2>Informasi produk</h2></div><button class="icon-button" aria-label="Tutup detail">${icon('x')}</button></div><div class="manifest-detail-body"></div></dialog><dialog class="manifest-delete-dialog"><div class="manifest-delete-card"><span class="manifest-delete-icon">${icon('trash-2')}</span><span class="section-kicker">MANIFEST MANAGEMENT</span><h2 id="manifest-delete-title">Hapus manifest?</h2><p id="manifest-delete-message"></p><div class="manifest-delete-note">${icon('shield-check')}<span>Foto sumber, judul produk, dan folder produk tidak akan diubah.</span></div><div class="manifest-delete-actions"><button type="button" class="button secondary" id="manifest-delete-cancel">Batal</button><button type="button" class="button danger" id="manifest-delete-confirm">Hapus manifest</button></div></div></dialog>`;
+  root.querySelector('.page-header')?.insertAdjacentHTML('afterend',`<details class="page-guide"><summary>${icon('circle-help')} Panduan manifest</summary><ol><li>Satu manifest menyimpan produk siap dari satu folder sumber. Gunakan <b>Buka manifest</b> untuk memasukkan file JSON yang sudah ada.</li><li>Periksa jumlah produk dan folder sumber; gunakan pencarian untuk menemukan judul atau komponen tertentu.</li><li>Pilih <b>Gunakan manifest ini</b> untuk membuka Generate dengan manifest tersebut terpilih.</li><li>Menghapus manifest hanya menghapus catatan manifest yang dipilih. Foto, judul, dan folder sumber tetap aman.</li></ol></details>`);
+  const $=<T extends HTMLElement=HTMLElement>(s:string)=>root.querySelector<T>(s)!;
+  const deleteDialog=$<HTMLDialogElement>('.manifest-delete-dialog');let confirmDeleteResolve:((accepted:boolean)=>void)|null=null;
+  deleteDialog.addEventListener('close',()=>{confirmDeleteResolve?.(deleteDialog.returnValue==='confirm');confirmDeleteResolve=null;});
+  $('#manifest-delete-cancel').onclick=()=>deleteDialog.close('cancel');$('#manifest-delete-confirm').onclick=()=>deleteDialog.close('confirm');deleteDialog.addEventListener('click',event=>{if(event.target===deleteDialog)deleteDialog.close('cancel');});
+  function confirmDelete(record:Record,deleteFile:boolean){return new Promise<boolean>(resolve=>{confirmDeleteResolve=resolve;$('#manifest-delete-title').textContent=`Hapus manifest ${record.name}?`;$('#manifest-delete-message').textContent=deleteFile?'Manifest ini akan dihapus dari daftar dan file lokal .moto-studio/manifest.json pada folder sumber. Anda dapat membuatnya lagi dengan analisis folder.':'Manifest ini akan dihapus dari daftar aplikasi. File JSON impor di lokasi aslinya tetap disimpan.';deleteDialog.showModal();});}
+  function rows(){
+    const r=current(),q=query.toLocaleLowerCase('id');
+    const products=r?.data.products.filter(p=>`${p.title} ${p.folder} ${Object.values(p.identity).join(' ')}`.toLocaleLowerCase('id').includes(q))||[];
+    const pages=Math.max(1,Math.ceil(products.length/25));page=Math.min(page,pages-1);
+    $('#manifest-table').innerHTML=!r?`<div class="manifest-empty">${icon('layers-3')}<h2>Belum ada manifest</h2><p>Simpan hasil analisis atau buka file manifest yang sudah ada.</p><button class="button primary" id="manifest-analyze">${icon('folder-search')} Analisis folder</button></div>`:!products.length?`<div class="manifest-empty">${icon('search')}<h2>Produk tidak ditemukan</h2><p>Coba judul, nama motor, atau folder yang berbeda.</p></div>`:`<table><thead><tr><th>No.</th><th>Judul produk / folder</th><th>Motor / merek</th><th>Varian</th><th>Foto</th><th></th></tr></thead><tbody>${products.slice(page*25,page*25+25).map((p,i)=>`<tr><td class="manifest-number">${page*25+i+1}</td><td><span class="manifest-product-title">${escape(p.title)}</span><span class="product-path">${escape(p.folder||r.data.sourceName)}</span></td><td><strong>${escape(p.identity.motorcycle||'—')}</strong><small>${escape(p.identity.brand||'Belum teridentifikasi')}</small></td><td><strong>${escape(p.identity.salesLabel||'—')}</strong><small>${escape(p.identity.model||p.identity.part||'Mengikuti folder')}</small></td><td><span class="manifest-photo">${icon('file-text')} ${p.installedPhoto?'2 foto':'1 foto'}</span><small>${p.referenceMode==='installed-only'?'Terpasang':p.installedPhoto?'Produk + terpasang':'Produk'}</small></td><td><button class="icon-button" data-product="${escape(p.id)}" aria-label="Lihat detail produk ${page*25+i+1}">${icon('arrow-up-right')}</button></td></tr>`).join('')}</tbody></table>`;
+    $('#manifest-analyze')?.addEventListener('click',options.analyze);
+    $('#manifest-match').textContent=r?`${products.length.toLocaleString('id')} produk siap`:'';
+    $('#manifest-range').textContent=products.length?`${page*25+1}–${Math.min((page+1)*25,products.length)} dari ${products.length} produk`:'Tidak ada produk untuk ditampilkan';
+    $('#manifest-page').textContent=`${page+1} / ${pages}`;
+    $('#manifest-prev').toggleAttribute('disabled',page===0);$('#manifest-next').toggleAttribute('disabled',page>=pages-1);
+    root.querySelectorAll<HTMLButtonElement>('[data-product]').forEach(b=>b.onclick=()=>detail(r!.data.products.find(p=>p.id===b.dataset.product)!));
+    options.icons();
+  }
+  function draw(){
+    $('#ml-count').textContent=String(records.length); options.count(records.length);
+    $('#manifest-list').innerHTML=records.map((r,i)=>`<button class="manifest-card ${opened===r.id?'viewed':''}" data-record="${escape(r.id)}"><div class="mc-top"><span>MANIFEST ${String(i+1).padStart(2,'0')}</span>${selected===r.id?'<em>Aktif</em>':''}</div><strong>${escape(r.name)}</strong><small>${date(r.data.createdAt)}</small><div class="mc-bottom"><span>${r.data.products.length} produk</span>${icon('chevron-right')}</div></button>`).join('')||'<p class="ml-caption ml-placeholder">Manifest yang disimpan akan muncul di sini.</p>';
+    root.querySelectorAll<HTMLButtonElement>('[data-record]').forEach(b=>b.onclick=()=>{opened=b.dataset.record!;page=0;query='';$<HTMLInputElement>('#manifest-search').value='';draw();});
+    const r=current();
+    $('#manifest-summary').innerHTML=r?`<div class="manifest-summary-head"><div><span class="section-kicker">${selected===r.id?'MANIFEST AKTIF':'DETAIL MANIFEST'}</span><h2>${escape(r.name)}</h2></div><div class="manifest-summary-actions"><button class="button danger-outline" id="delete-manifest">${icon('trash-2')} Hapus manifest</button><button class="button primary" id="select-manifest">${icon('layers-3')} Gunakan manifest ini</button></div></div><p class="manifest-root">${icon('folder-open')} <span>Folder sumber: <strong>${escape(r.data.sourceRoot)}</strong></span></p><div class="manifest-facts"><span>Dibuat<strong>${date(r.data.createdAt)}</strong></span><span>Disimpan<strong>${date(r.savedAt)}</strong></span><span>Isi manifest<strong>${r.data.products.length} produk</strong></span></div><p class="manifest-file" title="${escape(r.file)}">${icon('file-text')} ${escape(r.file)}</p>`:`<div class="manifest-summary-head"><div><span class="section-kicker">PERPUSTAKAAN PRODUK</span><h2>Manifest siap generate</h2></div></div><p class="manifest-root">Buka satu file manifest untuk melihat seluruh isi produknya.</p>`;
+    $('#select-manifest')?.addEventListener('click',()=>{selected=r!.id;persist();draw();options.notify(`Manifest ${r!.name} dipilih untuk proses generate berikutnya.`);options.use(r!.id);});
+    $('#delete-manifest')?.addEventListener('click',async()=>{if(!r)return;const expected=`${r.data.sourceRoot.replace(/[\\/]+$/,'')}\\.moto-studio\\manifest.json`;const deleteFile=desktop&&r.file.replaceAll('/','\\').toLocaleLowerCase('en-US')===expected.toLocaleLowerCase('en-US');if(!await confirmDelete(r,deleteFile)){publish({level:'info',category:'manifest',title:'Penghapusan manifest dibatalkan',message:`Manifest ${r.name} tetap tersimpan.`});return;}const button=$<HTMLButtonElement>('#manifest-delete-confirm');button.disabled=true;try{if(deleteFile){const {invoke}=await import('@tauri-apps/api/core');await invoke<boolean>('generation_delete_manifest',{sourceRoot:r.data.sourceRoot});}records=records.filter(item=>item.id!==r.id);if(selected===r.id)selected=records[0]?.id||'';opened=selected||records[0]?.id||'';page=0;query='';persist();options.use(selected);draw();deleteDialog.close('done');publish({level:'warning',category:'manifest',title:'Manifest dihapus',message:deleteFile?`Manifest ${r.name} dihapus dari daftar dan file lokal .moto-studio/manifest.json. Foto sumber serta folder produk tidak diubah.`:`Manifest ${r.name} dihapus dari daftar aplikasi; file JSON impor tetap berada di lokasi aslinya.`});options.notify(deleteFile?`Manifest ${r.name} dihapus. Foto dan folder produk tetap aman.`:`Manifest ${r.name} dihapus dari daftar; file impor tetap berada di lokasi aslinya.`);}catch(error){publish({level:'error',category:'manifest',title:'Penghapusan manifest gagal',message:`Manifest ${r.name}: ${(error as Error).message||'File tidak dapat dihapus.'}`});options.notify((error as Error).message||'Manifest tidak dapat dihapus.',true);}finally{button.disabled=false;}});
+    $('#manifest-active').textContent=selected&&records.find(r=>r.id===selected)?`Manifest aktif: ${records.find(r=>r.id===selected)!.name}`:'Belum ada manifest dipilih';
+    rows();
+  }
+  function detail(p:Product){
+    const fields=[['Judul produk',p.title],['Folder produk',p.folder||current()!.data.sourceName],['Merek',p.identity.brand],['Jenis motor',p.identity.motorcycle],['Komponen / part',p.identity.part],['Satuan / paket',p.identity.salesLabel],['Model',p.identity.model],['Foto produk',p.referenceMode==='installed-only'?null:p.productPhoto],['Foto produk terpasang',p.referenceMode==='installed-only'?p.productPhoto:p.installedPhoto],['File judul',p.titleFile]];
+    $('.manifest-detail-body').innerHTML=`<div class="manifest-ready">${icon('circle-check')} Siap diproses saat manifest disimpan</div><dl>${fields.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v||'Tidak tersedia')}</dd></div>`).join('')}</dl>`;
+    options.icons();$<HTMLDialogElement>('.manifest-detail').showModal();
+  }
+  $('.manifest-detail .icon-button').onclick=()=>$<HTMLDialogElement>('.manifest-detail').close();
+  $('#manifest-search').oninput=e=>{query=(e.target as HTMLInputElement).value;page=0;rows();};
+  $('#manifest-prev').onclick=()=>{page--;rows();$('#manifest-table').scrollTop=0;};$('#manifest-next').onclick=()=>{page++;rows();$('#manifest-table').scrollTop=0;};
+  async function openFile(){
+    const button=$<HTMLButtonElement>('#open-manifest');button.disabled=true;
+    try{
+      let text:string,file:string;
+      if(desktop){const {open}=await import('@tauri-apps/plugin-dialog');const path=await open({multiple:false,directory:false,title:'Buka manifest produk',filters:[{name:'Manifest JSON',extensions:['json']}]});if(!path)return;const fs=await import('@tauri-apps/plugin-fs');if((await fs.stat(path)).size>20*1024*1024)throw new Error('Ukuran manifest melebihi batas 20 MB.');text=await fs.readTextFile(path);file=path;}
+      else{const input=document.createElement('input');input.type='file';input.accept='.json,application/json';const f=await new Promise<File|null>(resolve=>{input.onchange=()=>resolve(input.files?.[0]||null);input.oncancel=()=>resolve(null);input.click();});if(!f)return;if(f.size>20*1024*1024)throw new Error('Ukuran manifest melebihi batas 20 MB.');text=await f.text();file=f.name;}
+      const data=validate(JSON.parse(text));add(data,file,new Date().toISOString());options.notify(`Manifest ${data.sourceName} dibuka. ${data.products.length} produk tersedia.`);
+    }catch(e){options.notify(e instanceof SyntaxError?'File JSON tidak dapat dibaca. Pilih file manifest yang valid.':(e as Error).message,true);}finally{button.disabled=false;}
+  }
+  $('#open-manifest').onclick=openFile;
+  function add(data:Document,file:string,savedAt:string){const old=records.find(r=>r.data.sourceRoot.toLocaleLowerCase()===data.sourceRoot.toLocaleLowerCase());const record={id:old?.id||crypto.randomUUID(),name:data.sourceName,file,savedAt,data};records=old?records.map(r=>r.id===old.id?record:r):[...records,record];opened=record.id;page=0;query='';$<HTMLInputElement>('#manifest-search').value='';persist();draw();}
+  draw();
+  return {saved(result:ScanResult,file:string){add(manifest(result),file,new Date().toISOString());},refresh:draw};
+}

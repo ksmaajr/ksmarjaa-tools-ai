@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "KSMARJAA TOOLS AI",
+  "version": "0.3.12",
+  "identifier": "com.ksmarjaatools.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "KSMARJAA TOOLS AI",
+        "width": 1360,
+        "height": 940,
+        "minWidth": 900,
+        "minHeight": 700,
+        "decorations": false,
+        "transparent": true,
+        "backgroundColor": "#171719cc",
+        "windowEffects": {
+          "effects": [
+            "acrylic"
+          ],
+          "state": "active"
+        }
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: data:; font-src 'self'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "shortDescription": "Analisis folder produk dan manifest lokal",
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      },
+      "nsis": {
+        "displayLanguageSelector": false
+      }
+    }
+  }
+}
